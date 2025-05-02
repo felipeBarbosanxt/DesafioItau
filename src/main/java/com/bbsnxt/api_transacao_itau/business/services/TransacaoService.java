@@ -18,8 +18,8 @@ public class TransacaoService {
     private final List<TransacaoRequestDTO> listaTransacoes = new ArrayList<>();
 
     public void adicionarTransacoes(TransacaoRequestDTO dto){
+        log.info("Iniciado o processo de gravação da transação: {}", dto);
 
-        log.info("Iniciado o processo de gravação das transações " + dto);
 
         if(dto.dataHora().isAfter(OffsetDateTime.now())){
             log.error("Data e hora maiores que a data e hora atual.");
@@ -41,13 +41,13 @@ public class TransacaoService {
     }
 
     public List<TransacaoRequestDTO> buscarTransacoes(Integer intervaloBusca){
-        log.info("Iniciadas buscas de transações no tempo de "+ intervaloBusca);
+        log.info("Iniciada busca de transações nos últimos {} segundos", intervaloBusca );
+
         OffsetDateTime dataHoraIntervalo = OffsetDateTime.now().minusSeconds(intervaloBusca);
 
-        log.info("Retorno de transações com sucesso.");
-        return listaTransacoes.stream().filter(transacao -> transacao.dataHora()
-                .isAfter(dataHoraIntervalo)).toList();
+        List<TransacaoRequestDTO> resultado = listaTransacoes.stream().filter(transacao -> transacao.dataHora().isAfter(dataHoraIntervalo)).toList();
+
+        log.info("Busca concluída com {} transações encontradas.", resultado.size());
+        return resultado;
     }
-
-
 }
