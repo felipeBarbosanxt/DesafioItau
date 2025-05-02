@@ -2,6 +2,7 @@ package com.bbsnxt.api_transacao_itau.controller;
 
 import com.bbsnxt.api_transacao_itau.business.services.TransacaoService;
 import com.bbsnxt.api_transacao_itau.controller.dtos.TransacaoRequestDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,7 @@ public class TransacaoController {
     private final TransacaoService transacaoService;
 
     @PostMapping
-    public ResponseEntity<Void> adicionarTransacao(@RequestBody TransacaoRequestDTO dto){
-
+    public ResponseEntity<Void> adicionarTransacao(@RequestBody @Valid TransacaoRequestDTO dto){
         transacaoService.adicionarTransacoes(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
